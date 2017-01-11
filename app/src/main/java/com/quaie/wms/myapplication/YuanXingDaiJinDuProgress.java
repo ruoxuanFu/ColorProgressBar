@@ -123,11 +123,16 @@ public class YuanXingDaiJinDuProgress extends ProgressBar {
         float textWidth = mPaint.measureText(text);
         float textHeight = (mPaint.descent() + mPaint.ascent()) / 2;
 
+        //锁画布(为了保存之前的画布状态)
         canvas.save();
 
-        //把控件放到指定的位置
+        //把当前画布的原点移到(dx,dy),后面的操作都以(dx,dy)作为参照点，默认原点为(0,0)
         canvas.translate(getPaddingLeft() + mMaxPainWidth / 2, getPaddingTop() + mMaxPainWidth / 2);
 
+        //setStyle为画笔的风格。
+        //Style.FILL：实心。
+        //Style.FILL_AND_STROKE：同时实心和空心，该参数在某些场合会带来不可预期的显示效果。
+        //Style.STROKE：空心。
         mPaint.setStyle(Paint.Style.STROKE);
 
         //绘制unreachbar
@@ -138,6 +143,7 @@ public class YuanXingDaiJinDuProgress extends ProgressBar {
 
         //绘制reachbar
         mPaint.setColor(mReachColor);
+        //设置空心线宽
         mPaint.setStrokeWidth(mReachHeight);
         //计算弧度
         float sweepAngle = getProgress() * 1.0f / getMax() * 360;
@@ -148,6 +154,7 @@ public class YuanXingDaiJinDuProgress extends ProgressBar {
         mPaint.setStyle(Paint.Style.FILL);
         canvas.drawText(text, mRadius - textWidth / 2, mRadius - textHeight / 2, mPaint);
 
+        //把当前画布返回（调整）到上一个save()状态之前
         canvas.restore();
     }
 
